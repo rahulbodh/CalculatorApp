@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -84,9 +85,9 @@ fun Calculator() {
         Spacer(modifier = Modifier.height(16.dp))
 
         val buttons = listOf(
-            listOf("C", "+/-", "%", "/"),
-            listOf("7", "8", "9", "x"),
-            listOf("4", "5", "6", "-"),
+            listOf("C", "±", "%", "÷"),
+            listOf("7", "8", "9", "×"),
+            listOf("4", "5", "6", "−"),
             listOf("1", "2", "3", "+"),
             listOf("0", ".", "=")
         )
@@ -101,16 +102,30 @@ fun Calculator() {
                 ) {
                     row.forEach { button ->
                         val weight = if(button == "0") 2f else 1f
+                        val backgroundColor  = when (button) {
+                            in listOf("÷", "×", "−", "+", "=") -> MaterialTheme.colorScheme.primary
+                            in listOf("C", "±", "%") -> MaterialTheme.colorScheme.secondary
+                            else -> MaterialTheme.colorScheme.inversePrimary
+                        }
+                        val contentColor = when (button) {
+                            in listOf("÷", "×", "−", "+", "=") -> MaterialTheme.colorScheme.onPrimary
+                            in listOf("C", "±", "%") -> MaterialTheme.colorScheme.onSecondary
+                            else -> MaterialTheme.colorScheme.onPrimary
+                        }
                        Button(
                            onClick = { },
                            modifier = Modifier
                                .weight(weight)
                                .aspectRatio(if(button == "0") 2f else 1f),
-                           shape = RoundedCornerShape(8.dp)
+                           colors = ButtonDefaults.buttonColors(
+                               containerColor = backgroundColor ,
+                               contentColor = contentColor
+                           ),
+                           shape = RoundedCornerShape(16.dp)
                        ) {
                            Text(
                                text = button,
-                               fontSize = 24.sp,
+                               fontSize = 30.sp,
                                fontWeight = FontWeight.Medium
                            )
                        }
